@@ -397,7 +397,11 @@ function loadExperimentElements() {
 	PIEsetAreaOfInterest(-10, 10, 10, -10);
 	init();
 	initFont();
+	PIEsetDeveloperName("Kartik Verma");
+	PIEsetExperimentTitle("Magnets- Attraction and Repulsion");
 	PIEscene.background = new THREE.Color(0x122f5e);
+	initialiseInfo();
+	initialiseHelp();
 }
 
 function resetExperiment() {
@@ -490,4 +494,54 @@ function onMouseDown(event){
 	}
 	PIErender();
 	// return handled;
+}
+
+
+var helpContent;
+function initialiseHelp()
+{
+    helpContent="";
+    helpContent = helpContent + "<h2>Magnets- Attraction and Repulsion</h2>";
+    helpContent = helpContent + "<h3>About the experiment</h3>";
+    helpContent = helpContent + "<p>The experiment shows interation between two magnets.</p>";
+    helpContent = helpContent + "<h3>Animation control</h3>";
+    helpContent = helpContent + "<p>The top line has animation controls. There are two states of the experiment.</p>";
+    helpContent = helpContent + "<h3>The setup stage</h3>";
+    helpContent = helpContent + "<p>The initial state is setup stage. In this stage, you can see a control window at the right. You have access to five sliders.</p>";
+    helpContent = helpContent + "<p>You can control the following:</p>";
+    helpContent = helpContent + "<ul>";
+    helpContent = helpContent + "<li>Magnetism&nbsp;&nbsp;:&nbsp;Controls how strong the magnets are?.</li>";
+    helpContent = helpContent + "<li>Flip Magnet 1&nbsp;&nbsp;:&nbsp;Controls the orientation of magnet 1.</li>";
+    helpContent = helpContent + "<li>Flip Magnet 2&nbsp;:&nbsp;Controls the orientation of magnet 2.</li>";
+    helpContent = helpContent + "</ul>";
+    helpContent = helpContent + "<p>Once you setup the experiment, you can enter the animation stage by clicking the start button</p>";
+    helpContent = helpContent + "<h3>The animation stage</h3>";
+    helpContent = helpContent + "<p>In the animation stage, You select the magnet on the end of table and then drag it closer to the other one.</p>";
+    helpContent = helpContent + "<p>The right hand panel now shows the values of the experiment variables during animation.</p>";
+    helpContent = helpContent + "<ul>";
+    helpContent = helpContent + "<li>Magnetism&nbsp;&nbsp;:&nbsp;Shows the strongness of Magnets.</li>";
+    helpContent = helpContent + "<li>Magnet One&nbsp;&nbsp;:&nbsp;Shows the orientation of magnet 1.</li>";
+    helpContent = helpContent + "<li>Magnet Two&nbsp;:&nbsp;Shows the orientation of magnet 2.</li>";
+    helpContent = helpContent + "</ul>";
+    helpContent = helpContent + "<p>In addition you will also see two sliders showing potential and kinetic energy.</p>";
+    helpContent = helpContent + "<p>You can pause and resume the animation by using the pause/play button on the top line</p>";
+    helpContent = helpContent + "<h3>The drag and drop</h3>";
+    helpContent = helpContent + "<h2>Happy Experimenting</h2>";
+    PIEupdateHelp(helpContent);
+}
+
+var infoContent;
+function initialiseInfo()
+{
+    infoContent =  "";
+    infoContent = infoContent + "<h2>Magnets- Attraction and Repulsion</h2>";
+    infoContent = infoContent + "<h3>About the experiment</h3>";
+    infoContent = infoContent + "<p>The experiment shows interation between two magnets.</p>";
+    infoContent = infoContent + "<h3>Magnets</h3>";
+	infoContent = infoContent + "<p>Magnets have two poles.</p>";
+	infoContent = infoContent + "<ul><li>North Pole</li><li>South Pole</li></ul>"
+    infoContent = infoContent + "<p>Similar Poles attract, while opposite poles repel each other.</p>";
+    infoContent = infoContent + "<p>e.g. If two north poles are brought together first pole repels other, On the other hand if we bring a north pole and south pole together they attract each other.</p>";
+    infoContent = infoContent + "<h2>Happy Experimenting</h2>";
+    PIEupdateInfo(infoContent);
 }
