@@ -133,7 +133,7 @@ class Magnet{
 				// this.magnet.computeBoundingBox();
 				positionT.setFromMatrixPosition( this.magnet.matrixWorld );
 				console.log("Position T -> " + positionT.x + ',' + positionT.y + ',' + positionT.z);
-				this.move(positionMg.x-8);
+				this.move(positionT.x-(this.range + 2));
 				console.log("Position is -> " + this.pos);
 				greatWorkText = drawText("Repulsion!", 0xbcbcbc, 1.0, 0.2, font, 0.0, false);
 				// if(this.pos < -5)
@@ -188,16 +188,16 @@ class Magnet{
 		let magnetMaterialSouth = new THREE.MeshPhongMaterial({color: 0xad9b98});
 		let magnetNorth = new THREE.Mesh(magnetG, magnetMaterialNorth);
 		let magnetSouth = new THREE.Mesh(magnetG, magnetMaterialSouth);
-		let ntext = drawText("N", 0x99401d, 0.5, 0.001, font, 0.0, false);
-		let stext = drawText("S", 0x101010, 0.5, 0.001, font, 0.0, false);
+		let ntext = drawText("N", 0x010101, 0.5, 0.001, font, 0.0, true);
+		let stext = drawText("S", 0x010101, 0.5, 0.001, font, 0.0, true);
 		if(this.pole == SN){
 			console.log("TYPE OF POSITION IS SN");
 			magnetNorth.position.x = 1;
 			magnetSouth.position.x = -1;
 			this.magnet.add(magnetNorth);
 			this.magnet.add(magnetSouth);
-			this.magnet.position.y = 0;
-			this.magnet.position.z = 4;
+			this.magnet.position.y = 2;
+			this.magnet.position.z = -8;
 
 			ntext.rotation.x = deg2Rad(10);
 			stext.rotation.x = deg2Rad(10);
@@ -209,8 +209,8 @@ class Magnet{
 			magnetSouth.position.x = 1;
 			this.magnet.add(magnetNorth);
 			this.magnet.add(magnetSouth);
-			this.magnet.position.y = 0;
-			this.magnet.position.z = 4;
+			this.magnet.position.y = 2;
+			this.magnet.position.z = -8;
 
 			ntext.rotation.x = deg2Rad(10);
 			stext.rotation.x = deg2Rad(10);
@@ -250,21 +250,22 @@ function drawText(text, color, size, height, font, rotation = 0.2, basic = false
 
 var table;
 function init(){
-	let tableTopG = new THREE.BoxGeometry(25, 16, 1);
+	let tableTopG = new THREE.BoxGeometry(24, 16, 1);
 	let tableTopMaterial = new THREE.MeshPhongMaterial({color: 0x9b640c});
 	let tableTop = new THREE.Mesh(tableTopG, tableTopMaterial);
+	tableTop.position.z = -8;
 	tableTop.rotation.x = deg2Rad(-10);
 
-	let tableLegG = new THREE.BoxGeometry(1, 6, 1);
+	let tableLegG = new THREE.BoxGeometry(1, 8, 1);
 	let tableLeg1 = new THREE.Mesh(tableLegG, tableTopMaterial);
 	let tableLeg2 = tableLeg1.clone();
 	let tableLeg3 = tableLeg1.clone();
 	let tableLeg4 = tableLeg1.clone();
 
-	tableLeg1.position.set(-8, -6, 6);
-	tableLeg2.position.set(8, -6, 6);
-	tableLeg3.position.set(8, -6, -6);
-	tableLeg4.position.set(-8, -6, -6);
+	tableLeg1.position.set(-10, -7, -8);
+	tableLeg2.position.set(10, -7, -8);
+	tableLeg3.position.set(10, -4, -16);
+	tableLeg4.position.set(-10, -4, -16);
 	PIEaddElement(tableTop);
 	PIEaddElement(tableLeg1);
 	PIEaddElement(tableLeg2);
@@ -277,6 +278,8 @@ function init(){
 	let floor2 = new THREE.Mesh(floorG, floorMt);
 	floor2.scale.x = 0.95;
 	floor2.scale.y = 0.95;
+	floor1.position.z = -9;
+	floor2.position.z = -9;
 	floor1.rotation.x = deg2Rad(-10);
 	floor1.position.y = -10.01;
 	floor2.rotation.x = deg2Rad(-10);
@@ -351,13 +354,17 @@ function initControlPanel(){
     PIEupdateTableCell(2, 0, "SN->SN");
 	PIEupdateTableCell(3, 0, "NS->SN");
 	PIEupdateTableCell(4, 0, "SN->NS");
-	PIEsetCellInput(1, 1, 15, "");
-	PIEsetCellInput(2, 1, 15, "");
-	PIEsetCellInput(3, 1, 15, "");
-	PIEsetCellInput(4, 1, 15, "");
+	PIEsetCellInput(1, 1, 15, "Attract");
+	PIEsetCellInput(2, 1, 15, "Attract");
+	PIEsetCellInput(3, 1, 15, "Repel");
+	PIEsetCellInput(4, 1, 15, "Repel");	
 
     // PIEtableSelect("Original Table");
 	PIEtableSetInputChange(handleChange);
+	let elem = document.getElementsByTagName("div")[22];
+	elem.style.top = "80px";
+	elem.style.left = "10px";
+	// elem.s
 	
 	PIEaddDisplayText(MAGNETISM, magnetism);
 	PIEaddDisplayText("Magnet One", !flipOne ? "SN" : "NS");
@@ -380,7 +387,7 @@ function loadScene(){
 	magnetS.move(-4)
 	magnetS.draw();
 	magnetM = new Magnet(magnetism, flipTwo, true);
-	magnetM.move(10);
+	magnetM.move(9);
 	magnetM.draw();
 	running = true;
 	// PIErender();
@@ -394,7 +401,7 @@ function loadScene(){
 }
 
 function loadExperimentElements() {
-	PIEsetAreaOfInterest(-10, 10, 10, -10);
+	PIEsetAreaOfInterest(-12, 12, 12, -12);
 	init();
 	initFont();
 	PIEsetDeveloperName("Kartik Verma");
@@ -410,7 +417,9 @@ function resetExperiment() {
 		timerEvent = null;
 		timerSet = false;
 	}
+	console.log("reset Experiment called");
 	if(greatWorkText){
+		console.log("removing great Work Text");
 		PIEremoveElement(greatWorkText);
 		greatWorkText = null;
 	}
@@ -437,16 +446,16 @@ function resetExperiment() {
 }
 
 function updateExperimentElements(t, dt) {
-	if(started == false){
-		started = true;
-	}
+	// if(started == false){
+	// 	started = true;
+	// }
 	// if(running){
 	// 	// magnetS.handleRotation();
 	// 	// if(magnetS.checkInRange(magnetM)){
 			
 	// 	// }
 	// 	// magnetS.chec
-	// 	magnetS.checkInRange(magnetM);
+	// magnetS.checkInRange(magnetM);
 	// 	PIErender();
 	// }
 }
@@ -456,7 +465,7 @@ function onMouseHover(event){
 	if(running == false){
 		return;
 	} else if (PIEshowInput == true){
-		console("returning because input true");
+		console.log("returning because input true");
 	}
 	console.log("Mouse over called -> " + magnetSelected);
 	mouse.x = (( event.clientX / PIErenderer.domElement.clientWidth ) * 2 - 1);
@@ -523,9 +532,10 @@ function initialiseHelp()
     helpContent = helpContent + "<li>Magnet One&nbsp;&nbsp;:&nbsp;Shows the orientation of magnet 1.</li>";
     helpContent = helpContent + "<li>Magnet Two&nbsp;:&nbsp;Shows the orientation of magnet 2.</li>";
     helpContent = helpContent + "</ul>";
-    helpContent = helpContent + "<p>In addition you will also see two sliders showing potential and kinetic energy.</p>";
     helpContent = helpContent + "<p>You can pause and resume the animation by using the pause/play button on the top line</p>";
-    helpContent = helpContent + "<h3>The drag and drop</h3>";
+	helpContent = helpContent + "<h3>The drag and drop</h3>";
+	helpContent = helpContent + "<h3>To select the magnet on the side just click on it. and to deselect again click anywhere on screen.</h3>";
+	helpContent = helpContent + "<h3>Once the magnet is selected just move the mouse to move the magnet in x direction</h3>";
     helpContent = helpContent + "<h2>Happy Experimenting</h2>";
     PIEupdateHelp(helpContent);
 }
@@ -541,7 +551,8 @@ function initialiseInfo()
 	infoContent = infoContent + "<p>Magnets have two poles.</p>";
 	infoContent = infoContent + "<ul><li>North Pole</li><li>South Pole</li></ul>"
     infoContent = infoContent + "<p>Similar Poles attract, while opposite poles repel each other.</p>";
-    infoContent = infoContent + "<p>e.g. If two north poles are brought together first pole repels other, On the other hand if we bring a north pole and south pole together they attract each other.</p>";
+	infoContent = infoContent + "<p>e.g. If two north poles are brought together first pole repels other, On the other hand if we bring a north pole and south pole together they attract each other.</p>";
+	infoContent = infoContent + "<p>When the magnet on the end of the table is brought closer to the magnet lying the center the two either attract or repel depending upon on the pole positions as described above.</p>"
     infoContent = infoContent + "<h2>Happy Experimenting</h2>";
     PIEupdateInfo(infoContent);
 }
